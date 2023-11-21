@@ -4,6 +4,7 @@ import java.awt.event.KeyListener;
 
 public class Game extends Frame implements KeyListener {
     private Snake snake;
+    private Food food;
     private int level;
     private int target;
     private int width;
@@ -22,18 +23,27 @@ public class Game extends Frame implements KeyListener {
         this.level = level;
         this.speed = speed;
         this.target = target;
-        snake = new Snake();
+        snake = new Snake("Green");
+        food = new Food(width, height);
 
         // Add key listener to the frame
         addKeyListener(this);
 
         // Set the focus on the frame so that it can receive key events
         setFocusable(true);
-        System.out.println("hello");
         requestFocus();
+        // Game Logic
         Thread movementThread = new Thread(() -> {
             while (isRunning) {
                 snake.move();
+                // System.out.println(Arrays.toString(food.get_food_position()));
+                // System.out.println(snake.get_head());
+                // if (Arrays.toString(snake.get_head()) ==
+                // Arrays.toString(food.get_food_position())) {
+                // snake.eat_food();
+                // System.out.println(snake.get_length());
+                // System.out.println("You eat sth");
+                // }
                 try {
                     Thread.sleep(speed); // Adjust the sleep time as needed for desired speed
                 } catch (InterruptedException e) {
