@@ -29,6 +29,7 @@ public class Game extends Frame implements KeyListener {
 
         // Set the focus on the frame so that it can receive key events
         setFocusable(true);
+        System.out.println("hello");
         requestFocus();
         Thread movementThread = new Thread(() -> {
             while (isRunning) {
