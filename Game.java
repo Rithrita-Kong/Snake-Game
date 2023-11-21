@@ -32,7 +32,9 @@ public class Game extends Frame implements KeyListener {
         // Set the focus on the frame so that it can receive key events
         setFocusable(true);
         requestFocus();
+
         // Game Logic
+        // We are still working on the game logic at the moment
         Thread movementThread = new Thread(() -> {
             while (isRunning) {
                 snake.move();
