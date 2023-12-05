@@ -1,8 +1,10 @@
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Game extends Frame implements KeyListener {
+import javax.swing.JFrame;
+
+public class Game extends JFrame implements KeyListener {
+    // Attributes
     private Snake snake;
     private Food food;
     private int level;
@@ -14,20 +16,23 @@ public class Game extends Frame implements KeyListener {
     private char direction;
     private boolean isRunning = true;
 
+    // Constructor
     public Game(int level, int target, int speed, int width, int height) {
         // Set properties of the frame
-        setSize(width, height);
+        setSize(20, 20);
         setTitle("Snake Game Key listener: ");
         setVisible(true);
 
-        // Initialize the snake object
+        // Set the attribute to its corrrespond value
         this.level = level;
         this.speed = speed;
         this.target = target;
         this.width = width;
         this.height = height;
+
+        // Initialize snake and food object
         snake = new Snake(30, "Green");
-        food = new Food(width, height);
+        food = new Food(width, height, "Red");
 
         // Add key listener to the frame
         addKeyListener(this);
@@ -62,6 +67,7 @@ public class Game extends Frame implements KeyListener {
 
     }
 
+    // Check if the snake head equal to the food position
     public void checkFood() {
         if ((snake.getX() == food.getFoodX()) && (snake.getY() == food.getFoodY())) {
             System.out.println("You eat sth");
@@ -72,6 +78,7 @@ public class Game extends Frame implements KeyListener {
         }
     }
 
+    // Check if the snake head hit its body or the wall
     public void checkHit() {
         // check if head run into walls
 
@@ -131,7 +138,6 @@ public class Game extends Frame implements KeyListener {
     }
 
     public static void main(String[] args) {
-        // Create an instance of the Game class
         int level = 1;
         int target = 20;
         int speed = 750;
