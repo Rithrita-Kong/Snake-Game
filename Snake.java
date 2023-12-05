@@ -1,13 +1,13 @@
-import java.util.ArrayList;
-
 public class Snake {
-    private ArrayList<Integer> body = new ArrayList<>(5);
-    private int[] head = { 0, 0 };
+    private int[] snakeX;
+    private int[] snakeY;
     private int length = 0;
     private char direction = 'd';
     private String color;
 
-    public Snake(String color) {
+    public Snake(int target, String color) {
+        snakeX = new int[target];
+        snakeY = new int[target];
         this.color = color;
     }
 
@@ -17,34 +17,54 @@ public class Snake {
 
     public void move() {
         turn();
-        System.out.println("Snake head is in position: x = " + head[0] + ", y = " + head[1]);
+        for (int i = length; i > 0; i--) {
+            // shift the snake one unit to the desired direction to create a move
+            snakeX[i] = snakeX[i - 1];
+            snakeY[i] = snakeY[i - 1];
+        }
+        System.out.println("Snake head is in position: x = " + snakeX[0] + ", y = " +
+                snakeY[0]);
     }
 
     private void turn() {
+
         if (direction == 'd') {
-            this.head[1]++;
+            this.snakeX[0]++;
         } else if (direction == 'a') {
-            this.head[1]--;
+            this.snakeX[0]--;
         } else if (direction == 'w') {
-            this.head[0]++;
+            this.snakeY[0]++;
         } else if (direction == 's') {
-            this.head[0]--;
+            this.snakeY[0]--;
         }
     }
 
-    private void grow() {
+    public void eat_food() {
         length++;
     }
 
-    public int get_length() {
+    public int getLength() {
         return length;
     }
 
-    public void eat_food() {
-        grow();
+    public int getX() {
+        return snakeX[0];
     }
 
-    public int[] get_head() {
-        return head;
+    public int getY() {
+        return snakeY[0];
     }
+
+    public int[] getBodyX() {
+        return snakeX;
+    }
+
+    public int[] getBodyY() {
+        return snakeY;
+    }
+
+    public char getDirection() {
+        return direction;
+    }
+
 }

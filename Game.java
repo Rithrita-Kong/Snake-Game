@@ -7,6 +7,7 @@ public class Game extends Frame implements KeyListener {
     private Food food;
     private int level;
     private int target;
+    private int score;
     private int width;
     private int height;
     private int speed;
@@ -23,7 +24,9 @@ public class Game extends Frame implements KeyListener {
         this.level = level;
         this.speed = speed;
         this.target = target;
-        snake = new Snake("Green");
+        this.width = width;
+        this.height = height;
+        snake = new Snake(30, "Green");
         food = new Food(width, height);
 
         // Add key listener to the frame
@@ -32,50 +35,89 @@ public class Game extends Frame implements KeyListener {
         // Set the focus on the frame so that it can receive key events
         setFocusable(true);
         requestFocus();
-
+        food.generate_food();
         // Game Logic
         // We are still working on the game logic at the moment
+
         Thread movementThread = new Thread(() -> {
+
             while (isRunning) {
                 snake.move();
-                // System.out.println(Arrays.toString(food.get_food_position()));
-                // System.out.println(snake.get_head());
-                // if (Arrays.toString(snake.get_head()) ==
-                // Arrays.toString(food.get_food_position())) {
-                // snake.eat_food();
-                // System.out.println(snake.get_length());
-                // System.out.println("You eat sth");
-                // }
+                System.out.println(food.getFoodX() + " " + food.getFoodY());
+                checkFood();
+                checkHit();
+
                 try {
                     Thread.sleep(speed); // Adjust the sleep time as needed for desired speed
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            if (!isRunning) {
+                System.out.println("Game Over!");
+            }
+
         });
         movementThread.start();
+
     }
 
+    public void checkFood() {
+        if ((snake.getX() == food.getFoodX()) && (snake.getY() == food.getFoodY())) {
+            System.out.println("You eat sth");
+            snake.eat_food();
+            food.generate_food();
+            System.out.println(snake.getLength());
+            score++;
+        }
+    }
+
+    public void checkHit() {
+        // check if head run into walls
+
+        if ((snake.getX() < 0 || snake.getX() > this.width) || (snake.getY() < 0 ||
+                snake.getY() > this.height)) {
+            isRunning = false;
+        }
+
+        // check if head run into its body
+        int[] bodyX = snake.getBodyX();
+        int[] bodyY = snake.getBodyY();
+        for (int i = score; i > 1; i--) {
+            System.out.println("Body x " + bodyX[i] + ", y " + bodyY[i]);
+            if (snake.getX() == bodyX[i] && snake.getY() == bodyY[i]) {
+                isRunning = false;
+            }
+        }
+    }
+
+    // Key Listener events
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         char keyChar = e.getKeyChar();
+        char currentdirection = snake.getDirection();
 
         // Up / W
         if (keyCode == 87 || keyCode == 38) {
-            direction = 'w';
+            if (currentdirection != 's')
+                direction = 'w';
         }
         // Left / A
         else if (keyCode == 65 || keyCode == 37) {
-            direction = 'a';
+            if (currentdirection != 'd')
+                direction = 'a';
         }
         // Right / D
         else if (keyCode == 68 || keyCode == 39) {
-            direction = 'd';
+            if (currentdirection != 'a')
+                direction = 'd';
         }
         // Down / S
         else if (keyCode == 83 || keyCode == 40) {
-            direction = 's';
+            if (currentdirection != 'w')
+                direction = 's';
         }
+        // Change the snake direction
         snake.setDirection(direction);
         System.out.println("Key pressed - KeyCode: " + keyCode + ", KeyChar: " + keyChar);
     }
@@ -92,9 +134,9 @@ public class Game extends Frame implements KeyListener {
         // Create an instance of the Game class
         int level = 1;
         int target = 20;
-        int speed = 1000;
+        int speed = 750;
         int width = 20;
         int height = 20;
-        Game example = new Game(level, target, speed, width, height);
+        Game level1 = new Game(level, target, speed, width, height);
     }
 }

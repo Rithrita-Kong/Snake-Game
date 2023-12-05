@@ -3,29 +3,29 @@ import java.util.Random;
 public class Food {
     private int width;
     private int height;
-    private int[] food_position = { 1, 10 };
+    public int foodX;
+    public int foodY;
     private String color;
 
-    public Food(String color) {
-        this.color = color;
-    }
-
-    public Food(int width, int height) {
+    public Food(int width, int height, String color) {
         this.width = width;
         this.height = height;
+        this.color = color;
     }
 
     public void generate_food() {
         // Generate a random location for the food.
         Random random = new Random();
-        int foodX = random.nextInt(width);
-        int foodY = random.nextInt(height);
-        food_position[0] = foodX;
-        food_position[1] = foodY;
+        this.foodX = random.nextInt(width);
+        this.foodY = random.nextInt(height);
     }
 
-    public int[] get_food_position() {
-        return food_position;
+    public int getFoodX() {
+        return foodX;
+    }
+
+    public int getFoodY() {
+        return foodY;
     }
 
 }
